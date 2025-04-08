@@ -1,72 +1,111 @@
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local TextButton = Instance.new("TextButton")
+-- Lumber Tycoon GUI by Zanj1n
 
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Services
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
-Frame.Size = UDim2.new(0, 200, 0, 100)
-Frame.BorderSizePixel = 2
-Frame.Active = true
--- Remove default dragging
-Frame.Draggable = false
+-- GUI Setup
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "LumberTycoonGui"
 
--- Custom dragging logic
-local UserInputService = game:GetService("UserInputService")
-local dragToggle = false
-local dragInput
-local dragStart
-local startPos
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
 
-local borderThreshold = 20 -- pixels from border where dragging is allowed
+-- Topbar
+local TopBar = Instance.new("Frame", MainFrame)
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+TopBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+TopBar.BorderSizePixel = 0
 
-Frame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        local mousePos = input.Position
-        local framePos = Frame.AbsolutePosition
-        local frameSize = Frame.AbsoluteSize
-        
-        -- Check if mouse is near borders
-        if mousePos.X <= framePos.X + borderThreshold or
-           mousePos.X >= framePos.X + frameSize.X - borderThreshold or
-           mousePos.Y <= framePos.Y + borderThreshold or
-           mousePos.Y >= framePos.Y + frameSize.Y - borderThreshold then
-            dragToggle = true
-            dragStart = input.Position
-            startPos = Frame.Position
-        end
-    end
+-- Close Button
+local Close = Instance.new("TextButton", TopBar)
+Close.Size = UDim2.new(0, 30, 0, 30)
+Close.Position = UDim2.new(1, -30, 0, 0)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+Close.Font = Enum.Font.SourceSansBold
+Close.TextScaled = true
+Close.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
 end)
 
-Frame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragToggle = false
-    end
-end)
+-- Sidebar
+local SideBar = Instance.new("Frame", MainFrame)
+SideBar.Size = UDim2.new(0, 120, 1, -30)
+SideBar.Position = UDim2.new(0, 0, 0, 30)
+SideBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 
-Frame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement and dragToggle then
-        local delta = input.Position - dragStart
-        Frame.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
-    end
-end)
+-- Container for category buttons
+local CategoryList = Instance.new("UIListLayout", SideBar)
+CategoryList.SortOrder = Enum.SortOrder.LayoutOrder
+CategoryList.Padding = UDim.new(0, 5)
 
-TextButton.Parent = Frame
-TextButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
-TextButton.Position = UDim2.new(0.5, -50, 0.5, -25)
-TextButton.Size = UDim2.new(0, 100, 0, 50)
-TextButton.Font = Enum.Font.SourceSansBold
-TextButton.Text = "Click Me!"
-TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextButton.TextSize = 18
+-- Content area
+local ContentFrame = Instance.new("Frame", MainFrame)
+ContentFrame.Size = UDim2.new(1, -120, 1, -30)
+ContentFrame.Position = UDim2.new(0, 120, 0, 30)
+ContentFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
-TextButton.MouseButton1Click:Connect(function()
-    print("Button clicked!")
-end)
+-- Function to clear content
+local function clearContent()
+	for _, child in ipairs(ContentFrame:GetChildren()) do
+		if not child:IsA("UIListLayout") then
+			child:Destroy()
+		end
+	end
+end
+
+-- UIList for content buttons
+local ContentList = Instance.new("UIListLayout", ContentFrame)
+ContentList.SortOrder = Enum.SortOrder.LayoutOrder
+ContentList.Padding = UDim.new(0, 5)
+
+-- Add category
+local function addCategory(name, buttons)
+	local btn = Instance.new("TextButton", SideBar)
+	btn.Size = UDim2.new(1, -10, 0, 30)
+	btn.Text = name
+	btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	btn.Font = Enum.Font.SourceSans
+	btn.TextScaled = true
+
+	btn.MouseButton1Click:Connect(function()
+		clearContent()
+		for i, data in ipairs(buttons) do
+			local b = Instance.new("TextButton", ContentFrame)
+			b.Size = UDim2.new(1, -10, 0, 30)
+			b.Text = data.text
+			b.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+			b.TextColor3 = Color3.fromRGB(255, 255, 255)
+			b.Font = Enum.Font.SourceSans
+			b.TextScaled = true
+			b.MouseButton1Click:Connect(function()
+				print(data.print)
+			end)
+		end
+	end)
+end
+
+-- Categories
+addCategory("Wood Tools", {
+	{text = "Auto Chop", print = "Chopping trees..."},
+	{text = "Teleport Logs", print = "Teleporting logs to base..."},
+})
+
+addCategory("Player Stuff", {
+	{text = "Speed Boost", print = "Speed increased!"},
+	{text = "Jump Power", print = "Jump power activated!"},
+})
+
+addCategory("Misc", {
+	{text = "ESP Trees", print = "ESP on trees enabled"},
+	{text = "Fly Mode", print = "Fly mode toggled"},
+})
