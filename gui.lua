@@ -1,3 +1,8 @@
+-- 🔁 Auto-close old GUI if it exists
+if game.CoreGui:FindFirstChild("LumberTycoonGui") then
+    game.CoreGui.LumberTycoonGui:Destroy()
+end
+
 -- Lumber Tycoon GUI by Zanj1n
 
 -- Services
@@ -42,18 +47,16 @@ SideBar.Size = UDim2.new(0, 120, 1, -30)
 SideBar.Position = UDim2.new(0, 0, 0, 30)
 SideBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 
--- Container for category buttons
 local CategoryList = Instance.new("UIListLayout", SideBar)
 CategoryList.SortOrder = Enum.SortOrder.LayoutOrder
 CategoryList.Padding = UDim.new(0, 5)
 
--- Content area
+-- Content Area
 local ContentFrame = Instance.new("Frame", MainFrame)
 ContentFrame.Size = UDim2.new(1, -120, 1, -30)
 ContentFrame.Position = UDim2.new(0, 120, 0, 30)
 ContentFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
--- Function to clear content
 local function clearContent()
 	for _, child in ipairs(ContentFrame:GetChildren()) do
 		if not child:IsA("UIListLayout") then
@@ -62,12 +65,11 @@ local function clearContent()
 	end
 end
 
--- UIList for content buttons
 local ContentList = Instance.new("UIListLayout", ContentFrame)
 ContentList.SortOrder = Enum.SortOrder.LayoutOrder
 ContentList.Padding = UDim.new(0, 5)
 
--- Add category
+-- Add Category Function
 local function addCategory(name, buttons)
 	local btn = Instance.new("TextButton", SideBar)
 	btn.Size = UDim2.new(1, -10, 0, 30)
