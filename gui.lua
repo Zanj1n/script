@@ -15,7 +15,7 @@ local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "LumberTycoonGui"
 
 local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.Size = UDim2.new(0, 543, 0, 427)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
 MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
 MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 MainFrame.BorderSizePixel = 0
@@ -110,22 +110,6 @@ addCategory("Player Stuff", {
 addCategory("Misc", {
 	{text = "ESP Trees", print = "ESP on trees enabled"},
 	{text = "Fly Mode", print = "Fly mode toggled"},
-}) 
-
--- Categories
-addCategory("Wood Tools", {
-	{text = "Auto Chop", print = "Chopping trees..."},
-	{text = "Teleport Logs", print = "Teleporting logs to base..."},
-})
-
-addCategory("Player Stuff", {
-	{text = "Speed Boost", print = "Speed increased!"},
-	{text = "Jump Power", print = "Jump power activated!"},
-})
-
-addCategory("Misc", {
-	{text = "ESP Trees", print = "ESP on trees enabled"},
-	{text = "Fly Mode", print = "Fly mode toggled"},
 })
 
 addCategory("Settings", {
@@ -133,4 +117,3 @@ addCategory("Settings", {
 	{text = "Graphics Boost", print = "Graphics settings boosted"},
 	{text = "Reset GUI", print = "GUI reset to defaults"},
 })
-
