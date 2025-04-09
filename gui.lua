@@ -110,4 +110,27 @@ addCategory("Player Stuff", {
 addCategory("Misc", {
 	{text = "ESP Trees", print = "ESP on trees enabled"},
 	{text = "Fly Mode", print = "Fly mode toggled"},
+}) 
+
+-- Categories
+addCategory("Wood Tools", {
+	{text = "Auto Chop", print = "Chopping trees..."},
+	{text = "Teleport Logs", print = "Teleporting logs to base..."},
 })
+
+addCategory("Player Stuff", {
+	{text = "Speed Boost", print = "Speed increased!"},
+	{text = "Jump Power", print = "Jump power activated!"},
+})
+
+addCategory("Misc", {
+	{text = "ESP Trees", print = "ESP on trees enabled"},
+	{text = "Fly Mode", print = "Fly mode toggled"},
+})
+
+addCategory("Settings", {
+	{text = "Toggle Shadows", print = "Shadows toggled"},
+	{text = "Graphics Boost", print = "Graphics settings boosted"},
+	{text = "Reset GUI", print = "GUI reset to defaults"},
+})
+
